@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Delete Account – Raqeeb</title>
+  <title>Account Management – Raqeeb</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -18,153 +19,321 @@
       padding: 48px 20px 64px;
     }
 
-    .logo {
-      font-size: 26px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      color: #4caf7d;
-      margin-bottom: 40px;
-    }
+    .logo-wrap { margin-bottom: 36px; }
+    .logo-wrap img { height: 36px; width: auto; display: block; }
 
     .card {
       background: #1c1f23;
       border-radius: 16px;
       padding: 36px 32px;
-      max-width: 560px;
+      max-width: 480px;
       width: 100%;
       border: 1px solid #2a2d32;
     }
 
-    h1 {
-      font-size: 22px;
-      font-weight: 700;
-      color: #f0f0f0;
-      margin-bottom: 10px;
-    }
+    h1 { font-size: 21px; font-weight: 700; color: #f0f0f0; margin-bottom: 6px; }
+    .subtitle { font-size: 14px; color: #888; margin-bottom: 28px; line-height: 1.5; }
 
-    .subtitle {
+    label { display: block; font-size: 13px; color: #888; margin-bottom: 6px; margin-top: 16px; }
+    label:first-of-type { margin-top: 0; }
+
+    input[type="email"], input[type="password"] {
+      width: 100%;
+      background: #111214;
+      border: 1px solid #2a2d32;
+      border-radius: 10px;
+      padding: 11px 14px;
+      color: #e8e8e8;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus { border-color: #4caf7d; }
+
+    .btn {
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      padding: 13px;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-green  { background: #4caf7d; color: #111; }
+    .btn-red    { background: #c0392b; color: #fff; margin-top: 12px; }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #3a3e45;
+      color: #b0b0b0;
+      margin-top: 12px;
+    }
+    .btn:not(:disabled):hover { opacity: 0.85; }
+
+    .divider { border: none; border-top: 1px solid #2a2d32; margin: 24px 0; }
+
+    .msg {
+      margin-top: 16px;
+      padding: 11px 14px;
+      border-radius: 10px;
       font-size: 14px;
-      color: #888;
-      margin-bottom: 28px;
       line-height: 1.5;
+      display: none;
+    }
+    .msg.show { display: block; }
+    .msg.error   { background: #2a1212; color: #e07070; border: 1px solid #5a2020; }
+    .msg.success { background: #122a1a; color: #6dbf90; border: 1px solid #1e5a32; }
+    .msg.info    { background: #191d22; color: #8ab4cc; border: 1px solid #2a3a4a; }
+
+    .warning-box {
+      background: #2a1a1a;
+      border-left: 3px solid #c0392b;
+      border-radius: 8px;
+      padding: 13px 15px;
+      font-size: 13px;
+      color: #e08080;
+      line-height: 1.55;
+      margin-bottom: 16px;
     }
 
-    h2 {
-      font-size: 14px;
+    .info-box {
+      background: #191d22;
+      border-left: 3px solid #4caf7d;
+      border-radius: 8px;
+      padding: 13px 15px;
+      font-size: 13px;
+      color: #9dd4b3;
+      line-height: 1.55;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 13px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.6px;
       color: #4caf7d;
-      margin-bottom: 12px;
-      margin-top: 28px;
+      margin-bottom: 14px;
     }
 
-    h2:first-of-type { margin-top: 0; }
-
-    p, li {
-      font-size: 15px;
-      color: #c0c0c0;
-      line-height: 1.65;
-    }
-
-    ol {
-      padding-left: 22px;
-    }
-
-    ol li {
-      margin-bottom: 6px;
-    }
-
-    .warning {
-      background: #2a1a1a;
-      border-left: 3px solid #e05a5a;
-      border-radius: 8px;
-      padding: 14px 16px;
-      margin: 20px 0;
+    .user-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #111214;
+      border: 1px solid #2a2d32;
+      border-radius: 10px;
+      padding: 11px 14px;
       font-size: 14px;
-      color: #e08080;
-      line-height: 1.55;
+      color: #c0c0c0;
+      margin-bottom: 24px;
+      word-break: break-all;
+    }
+    .user-badge span.dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #4caf7d; flex-shrink: 0;
     }
 
-    .divider {
-      border: none;
-      border-top: 1px solid #2a2d32;
-      margin: 28px 0;
-    }
+    #view-login, #view-manage { display: none; }
 
-    .email-link {
+    .spinner {
       display: inline-block;
-      margin-top: 8px;
-      color: #4caf7d;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 15px;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
     }
-    .email-link:hover { text-decoration: underline; }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    footer {
-      margin-top: 32px;
-      font-size: 13px;
-      color: #555;
-      text-align: center;
-    }
+    footer { margin-top: 32px; font-size: 12px; color: #444; text-align: center; }
 
     @media (max-width: 480px) {
-      .card { padding: 28px 20px; }
-      h1 { font-size: 20px; }
+      .card { padding: 28px 18px; }
+      h1 { font-size: 19px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="logo">Raqeeb رقيب</div>
+  <div class="logo-wrap">
+    <img src="logo_header.png" alt="Raqeeb" />
+  </div>
 
-  <div class="card">
+  <!-- ── Sign-in view ──────────────────────────────────────────── -->
+  <div class="card" id="view-login">
+    <h1>Account Management</h1>
+    <p class="subtitle">Sign in to manage or delete your account.</p>
 
-    <h1>Delete Your Account</h1>
-    <p class="subtitle">
-      You can permanently delete your Raqeeb account and all associated data at any time.
-    </p>
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="you@example.com" autocomplete="email" />
 
-    <h2>What gets deleted</h2>
-    <p>Deleting your account removes the following permanently:</p>
-    <ul style="padding-left:22px; margin-top:10px;">
-      <li style="margin-bottom:6px;">Your authentication credentials (email &amp; password)</li>
-      <li style="margin-bottom:6px;">All cloud backup data linked to your account</li>
-      <li style="margin-bottom:6px;">Your account profile on our servers</li>
-    </ul>
-    <p style="margin-top:12px; font-size:14px; color:#888;">
-      Data stored locally on your device (prayer records, Quran tracking, etc.) is <strong style="color:#c0c0c0;">not</strong> affected and remains on your phone.
-    </p>
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" />
 
-    <div class="warning">
-      ⚠ This action is permanent and cannot be undone. Your cloud backup will be lost.
+    <button class="btn btn-green" id="btn-login">Sign In</button>
+
+    <div class="msg" id="login-msg"></div>
+  </div>
+
+  <!-- ── Manage view ───────────────────────────────────────────── -->
+  <div class="card" id="view-manage">
+    <p class="section-title">Signed in as</p>
+    <div class="user-badge"><span class="dot"></span><span id="user-email-label"></span></div>
+
+    <!-- Delete data only -->
+    <p class="section-title">Cloud Data</p>
+    <div class="info-box">
+      This removes only your cloud backup from our servers. Your local app data and account remain intact — you can continue using the app and back up again later.
     </div>
-
-    <h2>How to delete in-app</h2>
-    <ol>
-      <li>Open the <strong style="color:#e8e8e8;">Raqeeb</strong> app</li>
-      <li>Tap the settings icon (⚙) on the main screen</li>
-      <li>Select <strong style="color:#e8e8e8;">Account Settings</strong></li>
-      <li>Scroll down and tap <strong style="color:#e08080;">Delete Account</strong></li>
-      <li>Confirm the action in the dialog</li>
-    </ol>
+    <button class="btn btn-outline" id="btn-delete-data">Delete Cloud Backup Only</button>
 
     <hr class="divider" />
 
-    <h2>Need help or can't access the app?</h2>
-    <p>
-      If you're unable to sign in or need us to delete your account manually,
-      email us and we'll process it within 7 days.
-    </p>
-    <a class="email-link" href="mailto:support@raqeeb.app">support@raqeeb.app</a>
+    <!-- Delete account -->
+    <p class="section-title">Delete Account</p>
+    <div class="warning-box">
+      ⚠ Permanently deletes your account and all cloud backup data. This cannot be undone. Local app data on your device is not affected.
+    </div>
+    <button class="btn btn-red" id="btn-delete-account">Delete My Account</button>
 
+    <hr class="divider" />
+
+    <button class="btn btn-outline" id="btn-sign-out" style="margin-top:0;">Sign Out</button>
+
+    <div class="msg" id="manage-msg"></div>
   </div>
 
-  <footer>
-    &copy; <span id="yr"></span> Raqeeb. All rights reserved.
-  </footer>
+  <footer>&copy; <span id="yr"></span> Raqeeb. All rights reserved.</footer>
 
-  <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+  <script>
+    const SUPABASE_URL  = 'https://ccwydkzvjkbguzvajyyk.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNjd3lka3p2amtiZ3V6dmFqeXlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNjMxMjgsImV4cCI6MjA4OTkzOTEyOH0.5rEvSs86oD55DTGQ6Gv9SMgIlQSYwE896rP5UPObcJw';
+
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    const viewLogin  = document.getElementById('view-login');
+    const viewManage = document.getElementById('view-manage');
+
+    function showMsg(id, text, type) {
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.className = 'msg show ' + type;
+    }
+    function hideMsg(id) {
+      const el = document.getElementById(id);
+      el.className = 'msg';
+    }
+    function setLoading(btn, loading, label) {
+      btn.disabled = loading;
+      btn.innerHTML = loading ? '<span class="spinner"></span> Please wait…' : label;
+    }
+
+    async function init() {
+      const { data: { session } } = await sb.auth.getSession();
+      if (session) showManage(session.user.email);
+      else showLogin();
+    }
+
+    function showLogin() {
+      viewLogin.style.display  = 'block';
+      viewManage.style.display = 'none';
+    }
+
+    function showManage(email) {
+      viewLogin.style.display  = 'none';
+      viewManage.style.display = 'block';
+      document.getElementById('user-email-label').textContent = email;
+    }
+
+    // ── Sign in ───────────────────────────────────────────────────
+    document.getElementById('btn-login').addEventListener('click', async () => {
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const btn      = document.getElementById('btn-login');
+
+      if (!email || !password) { showMsg('login-msg', 'Please enter your email and password.', 'error'); return; }
+      hideMsg('login-msg');
+      setLoading(btn, true, 'Sign In');
+
+      const { data, error } = await sb.auth.signInWithPassword({ email, password });
+      setLoading(btn, false, 'Sign In');
+
+      if (error) { showMsg('login-msg', error.message, 'error'); return; }
+      showManage(data.user.email);
+    });
+
+    // ── Delete cloud data only ────────────────────────────────────
+    document.getElementById('btn-delete-data').addEventListener('click', async () => {
+      if (!confirm('Delete your cloud backup data? Your account and local app data will not be affected.')) return;
+
+      const btn = document.getElementById('btn-delete-data');
+      setLoading(btn, true, 'Delete Cloud Backup Only');
+      hideMsg('manage-msg');
+
+      const { data: { user } } = await sb.auth.getUser();
+      const { error } = await sb.from('user_backups').delete().eq('user_id', user.id);
+
+      setLoading(btn, false, 'Delete Cloud Backup Only');
+
+      if (error) showMsg('manage-msg', 'Error: ' + error.message, 'error');
+      else showMsg('manage-msg', '✓ Cloud backup deleted. Your account is still active.', 'success');
+    });
+
+    // ── Delete account ────────────────────────────────────────────
+    document.getElementById('btn-delete-account').addEventListener('click', async () => {
+      if (!confirm('Permanently delete your account and all cloud data?\n\nThis cannot be undone.')) return;
+
+      const btn = document.getElementById('btn-delete-account');
+      setLoading(btn, true, 'Delete My Account');
+      hideMsg('manage-msg');
+
+      // 1. Delete cloud backup row
+      const { data: { user } } = await sb.auth.getUser();
+      await sb.from('user_backups').delete().eq('user_id', user.id);
+
+      // 2. Delete auth user via the RPC function
+      const { error: rpcError } = await sb.rpc('delete_user');
+
+      setLoading(btn, false, 'Delete My Account');
+
+      if (rpcError) {
+        showMsg('manage-msg', 'Error deleting account: ' + rpcError.message, 'error');
+        return;
+      }
+
+      await sb.auth.signOut();
+      viewManage.style.display = 'none';
+
+      // Show a standalone success message
+      const done = document.createElement('div');
+      done.className = 'card';
+      done.innerHTML = `
+        <div style="text-align:center; padding: 12px 0;">
+          <div style="font-size:52px; margin-bottom:16px;">✓</div>
+          <h1 style="margin-bottom:10px;">Account Deleted</h1>
+          <p style="color:#888; font-size:14px; line-height:1.6;">
+            Your account and cloud data have been permanently removed.<br>
+            Your local app data on your device is unaffected.
+          </p>
+        </div>`;
+      document.body.insertBefore(done, document.querySelector('footer'));
+    });
+
+    // ── Sign out ──────────────────────────────────────────────────
+    document.getElementById('btn-sign-out').addEventListener('click', async () => {
+      await sb.auth.signOut();
+      showLogin();
+    });
+
+    init();
+  </script>
 </body>
 </html>
