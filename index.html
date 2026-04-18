@@ -172,6 +172,47 @@
 
     footer { margin-top: 32px; font-size: 12px; color: #444; text-align: center; }
 
+    /* ── Static info section ── */
+    .info-section {
+      max-width: 480px;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    .info-section h2 {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #4caf7d;
+      margin-bottom: 12px;
+      margin-top: 24px;
+    }
+    .info-section h2:first-child { margin-top: 0; }
+    .info-section p, .info-section li {
+      font-size: 14px;
+      color: #b0b0b0;
+      line-height: 1.65;
+    }
+    .info-section ol { padding-left: 20px; }
+    .info-section ol li { margin-bottom: 5px; }
+    .data-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px; }
+    .data-table th {
+      text-align: left;
+      font-weight: 600;
+      color: #888;
+      padding: 6px 10px 6px 0;
+      border-bottom: 1px solid #2a2d32;
+    }
+    .data-table td {
+      padding: 8px 10px 8px 0;
+      color: #b0b0b0;
+      vertical-align: top;
+      border-bottom: 1px solid #1e2126;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .badge-del { color: #e07070; font-size: 11px; font-weight: 600; background: #2a1212; border: 1px solid #5a2020; border-radius: 4px; padding: 1px 6px; white-space: nowrap; }
+    .badge-keep { color: #6dbf90; font-size: 11px; font-weight: 600; background: #122a1a; border: 1px solid #1e5a32; border-radius: 4px; padding: 1px 6px; white-space: nowrap; }
+
     @media (max-width: 480px) {
       .card { padding: 28px 18px; }
       h1 { font-size: 19px; }
@@ -182,6 +223,56 @@
 
   <div class="logo-wrap">
     <img src="logo_header.png" alt="Raqeeb" />
+  </div>
+
+  <!-- ── Static compliance section (always visible) ────────────── -->
+  <div class="info-section">
+    <h2>About this page</h2>
+    <p>
+      This is the official account management page for <strong style="color:#e8e8e8;">Raqeeb – رقيب</strong>,
+      published on Google Play by <strong style="color:#e8e8e8;">Mog Academy</strong>.
+      Here you can delete your account or remove your cloud backup data at any time.
+    </p>
+
+    <h2>How to delete your account</h2>
+    <p>You can request account deletion in two ways:</p>
+    <ol style="margin-top:10px;">
+      <li><strong style="color:#e8e8e8;">In the app</strong> — open <em>Settings → Account Settings → Delete Account</em> and confirm.</li>
+      <li><strong style="color:#e8e8e8;">On this page</strong> — sign in below, then tap <em>Delete My Account</em>.</li>
+      <li><strong style="color:#e8e8e8;">By email</strong> — contact us at <a href="mailto:support@raqeeb.app" style="color:#4caf7d;">support@raqeeb.app</a> and we will process your request within 7 days.</li>
+    </ol>
+
+    <h2>What data is deleted &amp; what is kept</h2>
+    <table class="data-table">
+      <thead>
+        <tr><th>Data</th><th>On account deletion</th><th>On cloud data deletion only</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Sign-in credentials (email &amp; password)</td>
+          <td><span class="badge-del">Deleted immediately</span></td>
+          <td><span class="badge-keep">Kept</span></td>
+        </tr>
+        <tr>
+          <td>Cloud backup (prayer records, Quran tracking, goals, settings)</td>
+          <td><span class="badge-del">Deleted immediately</span></td>
+          <td><span class="badge-del">Deleted immediately</span></td>
+        </tr>
+        <tr>
+          <td>Local app data on your device</td>
+          <td><span class="badge-keep">Not affected</span></td>
+          <td><span class="badge-keep">Not affected</span></td>
+        </tr>
+        <tr>
+          <td>Anonymised crash &amp; analytics data (if any)</td>
+          <td><span class="badge-keep">Retained up to 90 days</span></td>
+          <td><span class="badge-keep">Retained up to 90 days</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top:10px; font-size:13px; color:#666;">
+      There is no additional retention period for account or backup data — deletion is permanent and immediate upon confirmation.
+    </p>
   </div>
 
   <!-- ── Sign-in view ──────────────────────────────────────────── -->
