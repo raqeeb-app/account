@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delete Account – Raqeeb</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #111214;
+      color: #e8e8e8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 20px 64px;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #4caf7d;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: #1c1f23;
+      border-radius: 16px;
+      padding: 36px 32px;
+      max-width: 560px;
+      width: 100%;
+      border: 1px solid #2a2d32;
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #f0f0f0;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    h2 {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #4caf7d;
+      margin-bottom: 12px;
+      margin-top: 28px;
+    }
+
+    h2:first-of-type { margin-top: 0; }
+
+    p, li {
+      font-size: 15px;
+      color: #c0c0c0;
+      line-height: 1.65;
+    }
+
+    ol {
+      padding-left: 22px;
+    }
+
+    ol li {
+      margin-bottom: 6px;
+    }
+
+    .warning {
+      background: #2a1a1a;
+      border-left: 3px solid #e05a5a;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin: 20px 0;
+      font-size: 14px;
+      color: #e08080;
+      line-height: 1.55;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #2a2d32;
+      margin: 28px 0;
+    }
+
+    .email-link {
+      display: inline-block;
+      margin-top: 8px;
+      color: #4caf7d;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+    }
+    .email-link:hover { text-decoration: underline; }
+
+    footer {
+      margin-top: 32px;
+      font-size: 13px;
+      color: #555;
+      text-align: center;
+    }
+
+    @media (max-width: 480px) {
+      .card { padding: 28px 20px; }
+      h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="logo">Raqeeb رقيب</div>
+
+  <div class="card">
+
+    <h1>Delete Your Account</h1>
+    <p class="subtitle">
+      You can permanently delete your Raqeeb account and all associated data at any time.
+    </p>
+
+    <h2>What gets deleted</h2>
+    <p>Deleting your account removes the following permanently:</p>
+    <ul style="padding-left:22px; margin-top:10px;">
+      <li style="margin-bottom:6px;">Your authentication credentials (email &amp; password)</li>
+      <li style="margin-bottom:6px;">All cloud backup data linked to your account</li>
+      <li style="margin-bottom:6px;">Your account profile on our servers</li>
+    </ul>
+    <p style="margin-top:12px; font-size:14px; color:#888;">
+      Data stored locally on your device (prayer records, Quran tracking, etc.) is <strong style="color:#c0c0c0;">not</strong> affected and remains on your phone.
+    </p>
+
+    <div class="warning">
+      ⚠ This action is permanent and cannot be undone. Your cloud backup will be lost.
+    </div>
+
+    <h2>How to delete in-app</h2>
+    <ol>
+      <li>Open the <strong style="color:#e8e8e8;">Raqeeb</strong> app</li>
+      <li>Tap the settings icon (⚙) on the main screen</li>
+      <li>Select <strong style="color:#e8e8e8;">Account Settings</strong></li>
+      <li>Scroll down and tap <strong style="color:#e08080;">Delete Account</strong></li>
+      <li>Confirm the action in the dialog</li>
+    </ol>
+
+    <hr class="divider" />
+
+    <h2>Need help or can't access the app?</h2>
+    <p>
+      If you're unable to sign in or need us to delete your account manually,
+      email us and we'll process it within 7 days.
+    </p>
+    <a class="email-link" href="mailto:support@raqeeb.app">support@raqeeb.app</a>
+
+  </div>
+
+  <footer>
+    &copy; <span id="yr"></span> Raqeeb. All rights reserved.
+  </footer>
+
+  <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+</body>
+</html>
